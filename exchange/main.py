@@ -4,32 +4,27 @@ from exchange.user import User
 
 class God:
     def __init__(self):
-        self.products = []
-        self.exchanges = []
-        self.users = []
+        self.exchanges = dict()
+        self.users = dict()
 
     def register_exchange(self, name: str):
-        constructor = Exchange
-        field = self.exchanges
-
-        for u in field:
-            if u.name == name:
+        for e_id in self.exchanges:
+            if self.exchanges[e_id].name == name:
                 # raise Exception("Already registered")
-                return u
-
-        obj = constructor(name)
-        field.append(obj)
-        return obj
+                return None
+        exchange = Exchange(name)
+        self.exchanges[exchange.id] = exchange
+        return exchange
 
     def register_user(self, name: str):
-        constructor = User
-        field = self.users
-
-        for u in field:
-            if u.name == name:
+        for user in self.users:
+            if self.users[user].name == name:
                 # raise Exception("Already registered")
-                return u
+                return None
 
-        obj = constructor(name)
-        field.append(obj)
-        return obj
+        user = User(name)
+        self.users[user.id] == user
+        return user
+
+
+god = God()

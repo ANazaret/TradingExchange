@@ -5,6 +5,7 @@ from exchange.product import Product
 
 
 class Exchange:
+    counter = 0
 
     def __init__(self, name):
         self.name = name
@@ -12,6 +13,10 @@ class Exchange:
         self.order_books = dict()
         self.trades = dict()
         self.matching_engine = MatchingEngine()
+
+        # Not thread safe
+        self.id = self.counter
+        self.counter += 1
 
     def add_product(self, name: str):
         for p in self.products:
