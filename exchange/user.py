@@ -1,17 +1,13 @@
 from exchange.order import Order, Side
 from exchange.product import Product
+from exchange.utils import add_id
 
 
 class User:
-    counter = 0
-
+    @add_id('name')
     def __init__(self, name: str):
         self.name = name
         self.orders = []
-
-        # Not thread safe
-        self.id = self.counter
-        self.counter += 1
 
     def __str__(self):
         return self.name

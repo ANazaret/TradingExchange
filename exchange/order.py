@@ -16,8 +16,6 @@ class Status(IntFlag):
 
 
 class Order:
-    counter = 0
-
     def __init__(self, user, side: Side, volume: int, price: float, product: Product):
         self.user = user
         self.side = side
@@ -27,10 +25,6 @@ class Order:
         self.price = price
         self.status = Status.NEW
         self.product = product
-
-        # Not thread safe
-        self.id = self.counter
-        self.counter += 1
 
     def trade(self, volume):
         self.volume_remaining -= volume

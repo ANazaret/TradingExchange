@@ -1,5 +1,6 @@
 from exchange.exchange import Exchange
 from exchange.user import User
+import collections
 
 
 class God:
@@ -7,12 +8,18 @@ class God:
         self.exchanges = dict()
         self.users = dict()
 
-    def register_exchange(self, name: str):
+        self.exchanges_id_counter = collections.defaultdict(int)
+
+    def register_exchange(self, name: str, password : str = ""):
         for e_id in self.exchanges:
             if self.exchanges[e_id].name == name:
-                # raise Exception("Already registered")
                 return None
-        exchange = Exchange(name)
+        exchange = Exchange(name, password)
+
+        if self.exchanges_id_counter[exchange.id] > 0:
+            exchange.id += "__%d" % (self.exchanges_id_counter[exchange.id])
+        self.exchanges_id_counter[exchange.id] += 1
+
         self.exchanges[exchange.id] = exchange
         return exchange
 

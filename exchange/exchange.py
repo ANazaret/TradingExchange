@@ -2,21 +2,17 @@ from exchange.matchingEngine import MatchingEngine
 from exchange.order import Order, Status
 from exchange.orderBook import OrderBook
 from exchange.product import Product
-
+from exchange.utils import add_id
 
 class Exchange:
-    counter = 0
-
-    def __init__(self, name):
+    @add_id('name')
+    def __init__(self, name, password):
         self.name = name
+        self.password = password
         self.products = []
         self.order_books = dict()
         self.trades = dict()
         self.matching_engine = MatchingEngine()
-
-        # Not thread safe
-        self.id = self.counter
-        self.counter += 1
 
     def add_product(self, name: str):
         for p in self.products:
