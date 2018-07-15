@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <title>Trading game</title>
+    <link href="{% static 'favicon.ico' %}" rel='icon'>
+    {% include 'styles.html' %}
+</head>
+
+<body>
+    {% include 'nav.html' %}
+    {% block body %}{% endblock %}
+</body>
+
+<footer>
+    {% include 'scripts.html' %}
+    {% block add_scripts %}{% endblock %}
+</footer>
+
+</html>
