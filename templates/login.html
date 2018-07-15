@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row ">
+        <div class="col-sm-4 col-sm-offset-4">
+            <form method="post" action="{{url_for('views.register_user')}}" class="" style="padding:10px; margin-top:20px">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                    <input type="text" class="form-control" name="username" placeholder="Username">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-success" >Log in</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

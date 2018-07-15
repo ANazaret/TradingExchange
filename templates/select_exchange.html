@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row ">
+        <div class="col-sm-6 col-sm-offset-3">
+            <h3>Select exchange</h3>
+            <div class="list-group" id="exchange_list">
+            {% for exchange in exchanges.values() %}
+                <a href="{{ url_for('views.exchange', exchange_id=exchange.id) }}"
+                   class="list-group-item list-group-item-action">
+                    {{exchange.name}}
+                </a>
+            {% endfor %}
+            </div>
+            <hr/>
+            <h3>Create your own exchange</h3>
+            <form method="post" action="{{url_for('views.register_exchange')}}" class="form-inline center" style="padding:10px; margin-top:20px">
+                {% if already_exists %}
+                <div class="alert alert-danger" role="alert">
+                    Exchange name already taken
+                </div>
+                {% endif %}
+                <div class="input-group ">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-transfer"></span></span>
+                    <span class="input-group">
+                        <input type="text" class="form-control" name="exchange_name" placeholder="Exchange name">
+                    </span>
+                    <span class="input-group">
+                        <input type="password" class="form-control" name="password" placeholder="Password">
+                    </span>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-success" >Create</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,11 +1,14 @@
-{% load static %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename= 'js/websockets.js') }}" ></script>
+<script src="{{ url_for('static', filename= 'js/core.js') }}" ></script>
 
-<script src="{% static 'js/jquery/jquery-3.3.1.min.js' %}" ></script>
-<script src="{% static 'js/jquery/jquery-ui.min.js' %}"></script>
-<script src="{% static 'js/bootstrap/popper.js' %}"></script>
-<script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+<script src="{{ url_for('static', filename= 'js/split.min.js') }}" ></script>
+<script src="{{ url_for('static', filename= 'js/jquery/jquery-3.3.1.min.js') }}" ></script>
+<script src="{{ url_for('static', filename= 'js/jquery/jquery-ui.min.js') }}"></script>
+<script src="{{ url_for('static', filename= 'js/bootstrap/popper.js') }}"></script>
+<script src="{{ url_for('static', filename= 'js/bootstrap/bootstrap.min.js') }}"></script>
 
-<script src="{% static 'js/dataTables/jquery.dataTables.min.js' %}"> </script>
-<script src="{% static 'js/dataTables/dataTables.bootstrap.min.js' %}"> </script>
+<script src="{{ url_for('static', filename= 'js/dataTables/jquery.dataTables.min.js') }}"> </script>
+<script src="{{ url_for('static', filename= 'js/dataTables/dataTables.bootstrap.min.js') }}"> </script>
 
-<script src="{% static 'js/bootstrap-dialog.js' %}"> </script>
+<script src="{{ url_for('static', filename= 'js/bootstrap-dialog.js') }}"> </script>

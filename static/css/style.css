@@ -9,36 +9,11 @@ body {
   margin-top:50px;
 }
 
-.overflow {      	
-	  	overflow: auto;
-}
 
 h1,h2,h3 {
   font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-
-.loader {
-  padding-top:5px;
-  border: 3px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 3px solid #3498db;
-  width: 20px;
-  height: 20px;
-  -webkit-animation: spin 2s linear infinite; /* Safari */
-  animation: spin 2s linear infinite;
-}
-
-/* Safari */
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
 
 /* -------- General panel/button design --------- */
 
@@ -47,51 +22,7 @@ h1,h2,h3 {
 }
 
 
-.panel {
-	border-radius: 0px;
-    transition: 0.4s;
-}
-
-
-.panel-heading.panel-famille{
-     height:45px;
-     padding-top:5px;
-}
-
-.panel-heading{
-     background-color: #D0BB85 !important;
-}
-
-.panel-heading h4 {
-    margin:0;
-    padding-top:5px;
-    padding-bottom:5px;
-}
-
-.panel-body{
-    transition: 0.4s;
-}
-
-
 /* -------------------------------------------- */
-
-
-
-.navbar-nav>.active>a {
-    background-color: #B39C5F !important;
-}
-
-
-.navbar-nav>li>a:hover {
-    background-color: #B39C5F !important;
-}
-
-.navbar-familles a{
-    color:white !important;
-}
-
-
-
 
 a > span.glyphicon{
     color:black;
@@ -105,41 +36,6 @@ a > span.glyphicon:hover{
 
 /* --------------------------------------- */
 
-
-
-/*    Change the autocomplete design */
-
-.awesomplete mark {
-    /*background: hsl(65, 100%, 50%);*/
-    background: hsl(43, 44%, 67%);
-}
-
-.awesomplete li:hover mark {
-    background: hsl(68, 100%, 41%);
-}
-
-.awesomplete li[aria-selected="true"] mark {
-    background: hsl(86, 100%, 21%);
-    color: inherit;
-}
-
-
-
-
-.row-participant:hover {
-    background-color: rgba(0,150,0,0.1) !important;
-    cursor: pointer;
-}
-
-.form-control.plaintext{
-    background-color: #fff;
-}
-
-table.double tr > td:first-child,
-table.double th > td:first-child{
-    background-color: rgba(0,0,100,0.2);
-}
-
 td .glyphicon-ok {
     color: green;
 }
@@ -148,24 +44,6 @@ td .glyphicon-remove {
     color: red;
 }
 
-
-
-.pointer {
-    cursor: pointer;
-}
-
-.pointer:hover{
-    background-color: rgba(170,170,100,0.15) !important;
-}
-
-.panel-body {
-	padding-right:0px;
-	padding-left:0px;
-}
-
-.table-responsive{
-	margin-bottom:0px;
-}
 
 .dataTables_length,
 .dataTables_paginate{
@@ -176,18 +54,3 @@ td .glyphicon-remove {
 .dataTables_paginate{
     text-align:center !important;
 }
-
-
-.rang-1{
-    background-color:rgba(243,183,0,0.2) !important;
-}
-
-.rang-2{
-    background-color:rgba(178,178,178,0.2) !important;
-}
-
-.rang-3{
-    background-color:rgba(198,106,0,0.2) !important;
-}
-
-
