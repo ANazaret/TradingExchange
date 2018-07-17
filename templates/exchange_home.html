@@ -3,9 +3,24 @@
 {% block body %}
 
 <div class="container">
+    <h1> {{ exchange.name }} </h1>
     <div class="row ">
         Hey {{ session['username'] }}, welcome to {{ exchange.name }}
+
+        <button id="btn_buy" class="btn btn-success" onclick="place_order('bid', 10., 1)">BUY</button>
+        <button id="btn_sell" class="btn btn-danger" onclick="place_order('ask', 10., 1)">SELL</button>
     </div>
 </div>
 
+{% endblock %}
+
+
+{% block add_scripts %}
+
+<script src="{{ url_for('static', filename= 'js/websockets.exchange.js') }}"></script>
+<script>
+var exchange_id = "{{exchange.id}}";
+var product_id = "{{exchange.id}}__default";
+
+</script>
 {% endblock %}

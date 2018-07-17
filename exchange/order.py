@@ -7,6 +7,14 @@ class Side(IntEnum):
     BID = 1
     ASK = 2
 
+    @staticmethod
+    def get_side(side_string: str):
+        if side_string == 'ask':
+            return Side.ASK
+        if side_string == 'bid':
+            return Side.BID
+        raise Exception
+
 
 class Status(IntFlag):
     CANCELED = 0
@@ -25,6 +33,7 @@ class Order:
         self.price = price
         self.status = Status.NEW
         self.product = product
+        self.id = None
 
     def trade(self, volume):
         self.volume_remaining -= volume
@@ -48,3 +57,13 @@ class Order:
 
     def __repr__(self):
         return self.__str__()
+
+    def json(self):
+        return {
+            'order_id': self.id,
+            'status': self.status._name_,
+            # other stuff to add
+        }
+
+    def set_id(self, n_orders):
+        self.id = n_orders

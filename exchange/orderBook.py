@@ -2,8 +2,9 @@ from exchange.order import Order, Side
 from exchange.orderQueue import OrderQueue
 from exchange.product import Product
 
+
 class OrderBook:
-    def __init__(self, product : Product):
+    def __init__(self, product: Product):
         self.product = product
         self.bid_queue = OrderQueue(Side.BID)
         self.ask_queue = OrderQueue(Side.ASK)
@@ -14,7 +15,7 @@ class OrderBook:
         else:
             self.ask_queue.put(order)
 
-    def get_opposite_queue(self, order : Order):
+    def get_opposite_queue(self, order: Order):
         if order.side == Side.BID:
             return self.ask_queue
         return self.bid_queue
@@ -22,7 +23,6 @@ class OrderBook:
     def __str__(self):
         res = ""
 
-
-
-
-
+    def json(self, user_id=None):
+        return {'bid': self.bid_queue.json(user_id),
+                'ask': self.ask_queue.json(user_id)}
