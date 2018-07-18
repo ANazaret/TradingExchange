@@ -5,7 +5,11 @@ socket.on('connect', function() {
 });
 
 socket.on('exchange_update', function(data) {
-    $('h1').append(data);
+    $('#exchange').append(data);
+});
+
+socket.on('order_update', function(data) {
+    $('#exchange').append(data.order_id + " " + data.status);
 });
 
 function get_initial_exchange_data(){
@@ -30,3 +34,12 @@ function place_order(side, price, volume){
         }
     )
 }
+
+$('.btn-send-order').click( function(event){
+    var side = event.originalEvent.target.attributes['data-side'].value;
+    var price = parseFloat($('#price').val());
+    var volume = parseInt($('#volume').val());
+    if (price > 0 && volume > 0 ){
+        place_order(side, price, volume);
+    }
+});

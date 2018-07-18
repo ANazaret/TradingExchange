@@ -1,3 +1,5 @@
+from flask_socketio import emit
+
 from exchange.exchange import Exchange
 from exchange.user import User
 import collections
@@ -19,8 +21,14 @@ class God:
         if self.exchanges_id_counter[exchange.id] > 0:
             exchange.id += "__%d" % (self.exchanges_id_counter[exchange.id])
         self.exchanges_id_counter[exchange.id] += 1
-
         self.exchanges[exchange.id] = exchange
+
+        exchange.register_trades_subscriber(
+            lambda x, y: emit('exchange_update', "Trade %s on %s" % (y.volume, x), room=x)
+        )
+        exchange.register_trades_subscriber(
+            lambda x, y: print("Trade %s on %s" % (y.volume, x))
+        )
         return exchange
 
     def register_user(self, name: str):
@@ -30,6 +38,9 @@ class God:
 
         user = User(name)
         self.users[user.id] = user
+        user.register_order_update_subscribers(
+            lambda x, y: emit('order_update', y.json(), room=x)
+        )
         return user
 
     def get_user(self, user_id: str) -> User:

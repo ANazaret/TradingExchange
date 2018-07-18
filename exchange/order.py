@@ -39,12 +39,16 @@ class Order:
         self.volume_remaining -= volume
 
         if self.volume_remaining == 0:
-            self.status = Status.FILLED
+            self._update_status(Status.FILLED)
         else:
-            self.status = Status.PARTIAL
+            self._update_status(Status.PARTIAL)
 
     def cancel(self):
-        self.status = Status.CANCELED
+        self._update_status(Status.CANCELED)
+
+    def _update_status(self, new_status: Status):
+        self.status = new_status
+        self.user.broadcast_order_update(self)
 
     def __str__(self):
         res = "(%s) %s %.2f (x %d/%d) %s on %s" % (
@@ -62,6 +66,7 @@ class Order:
         return {
             'order_id': self.id,
             'status': self.status._name_,
+            'volume_remaining': self.volume_remaining,
             # other stuff to add
         }
 

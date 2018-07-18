@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, request
 from flask_socketio import SocketIO, join_room, emit
 from exchange.main import god
 from exchange.order import Side
@@ -13,11 +13,13 @@ socketio = SocketIO(app)
 
 god.register_exchange('Fish market')
 god.register_exchange('Love Island', 'interns')
+god.register_user('Achille')
+god.register_user('Henry')
 
 
-@socketio.on('client_connected')
-def handle_message(message):
-    0  # print(message)
+@socketio.on('connected')
+def connection():
+    session['sid'] = request.sid
 
 
 @socketio.on('join_exchange')
@@ -26,6 +28,8 @@ def join_exchange():
         return
     print(session['username'] + ' has joined ' + session['exchange_id'])
     join_room(session['exchange_id'])
+    user = god.get_user(session['user_id'])
+    user.set_sid(session['sid'])
 
 
 @socketio.on('get_initial_exchange_data')
@@ -73,7 +77,3 @@ def place_order(data):
 
 if __name__ == '__main__':
     socketio.run(app, port=8000, debug=True)
-    while True:
-        for e_id in god.exchanges:
-            emit('exchange_update', 'Bite %s' % e_id, room=e_id, namespace='/')
-        socketio.sleep(5)
