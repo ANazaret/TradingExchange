@@ -21,8 +21,8 @@ class OrderBook:
         return self.bid_queue
 
     def __str__(self):
-        res = ""
+        return ""
 
-    def json(self, user_id=None):
-        return {'bid': self.bid_queue.json(user_id),
-                'ask': self.ask_queue.json(user_id)}
+    def json(self):
+        return {'bid': self.bid_queue.json(),
+                'ask': self.ask_queue.json()}

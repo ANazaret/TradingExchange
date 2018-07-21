@@ -5,6 +5,7 @@ from exchange.product import Product
 from exchange.user import User
 from exchange.utils import add_id
 
+
 class Exchange:
     @add_id('name')
     def __init__(self, name, password):
@@ -19,14 +20,14 @@ class Exchange:
         self.add_product('_default')
         self.n_orders = 0
         self.trades_subscribers = []
-        self.order_book_update_subscriber = []
+        self.order_book_subscriber = []
         self.order_books_subscribers = []
 
     def register_trades_subscriber(self, subscriber):
         self.trades_subscribers.append(subscriber)
 
-    def register_order_book_update_subscriber(self, subscriber):
-        self.order_book_update_subscriber.append(subscriber)
+    def register_order_book_subscriber(self, subscriber):
+        self.order_book_subscriber.append(subscriber)
 
     def add_product(self, name: str):
         for p in self.products.values():
@@ -44,6 +45,7 @@ class Exchange:
         order.set_id(self.n_orders)
         self.n_orders += 1
         self._place_order(order)
+        self.broadcast_order_book(product_id)
         return order
 
     def _place_order(self, order: Order):
@@ -61,6 +63,10 @@ class Exchange:
     def broadcast_trade(self, trade):
         for subscriber in self.trades_subscribers:
             subscriber(self.id, trade)
+
+    def broadcast_order_book(self, product_id: str):
+        for subscriber in self.order_book_subscriber:
+            subscriber(self.id, self.order_books[product_id])
 
     def get_order_book(self, product_id: str) -> OrderBook:
         if product_id not in self.order_books:

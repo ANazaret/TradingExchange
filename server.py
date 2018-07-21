@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, request
+from flask import Flask, render_template, session, request, Blueprint
 from flask_socketio import SocketIO, join_room, emit
 from exchange.main import god
 from exchange.order import Side
@@ -7,6 +7,8 @@ from views import blueprint, username_required, field_session_required
 
 app = Flask(__name__)
 app.register_blueprint(blueprint)
+blueprint_dist = Blueprint('generated', __name__, static_url_path='/static/generated', static_folder='dist/static')
+app.register_blueprint(blueprint_dist)
 
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
@@ -23,20 +25,14 @@ def connection():
 
 
 @socketio.on('join_exchange')
-def join_exchange():
-    if 'exchange_id' not in session:
-        return
+def join_exchange(message):
+    if not check_dict_fields(message, ['exchange_id', 'product_id']):
+        return 'Invalid request'
     print(session['username'] + ' has joined ' + session['exchange_id'])
     join_room(session['exchange_id'])
     user = god.get_user(session['user_id'])
     user.set_sid(session['sid'])
 
-
-@socketio.on('get_initial_exchange_data')
-@username_required
-def get_initial_exchange_data(message):
-    if not check_dict_fields(message, ['exchange_id', 'product_id']):
-        return 'Invalid request'
     exchange_id = message['exchange_id']
     product_id = message['product_id']
 
@@ -76,4 +72,4 @@ def place_order(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app, port=8000, debug=True)
+    socketio.run(app, host="0.0.0.0", port=8000, debug=True)

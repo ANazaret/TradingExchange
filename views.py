@@ -43,7 +43,7 @@ def exchange(exchange_id):
 
     session['exchange_id'] = exchange_id
 
-    return render_template('exchange_home.html', exchange=god.exchanges[exchange_id])
+    return render_template('exchange_home.html', exchange=god.exchanges[exchange_id], depth=god.ORDER_BOOK_DEPTH)
 
 
 @blueprint.route('/register/user/', methods=['POST'])

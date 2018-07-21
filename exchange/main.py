@@ -6,6 +6,8 @@ import collections
 
 
 class God:
+    ORDER_BOOK_DEPTH = 6
+
     def __init__(self):
         self.exchanges = dict()
         self.users = dict()
@@ -28,6 +30,12 @@ class God:
         )
         exchange.register_trades_subscriber(
             lambda x, y: print("Trade %s on %s" % (y.volume, x))
+        )
+        exchange.register_order_book_subscriber(
+            lambda x, y: emit('book_update', {
+                'product_id': y.product.id,
+                'order_book': y.json(),
+            }, room=x)
         )
         return exchange
 
