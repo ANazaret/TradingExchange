@@ -3,17 +3,18 @@
 {% block body %}
 
 <div class="container">
-    <h1> {{ exchange.name }} </h1>
     <div class="row ">
-        Hey {{ session['username'] }}, welcome to {{ exchange.name }}
+        <div class="col-sm-4" id="order_book">
+            {% include 'order_book.html' %}
+        </div>
         <div id="exchange" class="col-md-6 col-md-offset-3">
         </div>
         <br/>
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8 col-md-offset-2 hidden-xs">
             <div class="form-group row">
                 <label for="volume" class="col-sm-1 col-form-label">Volume</label>
                 <div class="col-sm-2">
-                    <input type="number" class="form-control" id="volume" placeholder="Eg: 5">
+                    <input type="number" class="form-control" id="volume" placeholder="Eg: 5" value="1">
                 </div>
                 <label for="price" class="col-sm-1 col-form-label">Price</label>
                 <div class="col-sm-3">
@@ -21,13 +22,34 @@
                 </div>
                 <div class="col-sm-4">
                     <button data-side="bid" class="btn btn-success btn-send-order">BUY</button>
+
                     <button data-side="ask" class="btn btn-danger btn-send-order">SELL</button>
                 </div>
             </div>
         </div>
-        <div class="col-md-4" id="order_book">
-            {% include 'order_book.html' %}
+
+        <div class="navbar navbar-default navbar-fixed-bottom visible-xs">
+            <div class="container">
+                <div class="row center">
+                    <div class="col-xs-3" style="padding-left: 2px">
+                        <button data-side="bid" class="btn btn-success btn-send-order btn-lg">BUY</button>
+                    </div>
+                    <div class="col-xs-6" id="sliders">
+                        <div class="rangeslider-wrap price-slider">
+                            <input id="price-slider" type="range" min="10" max="1000" step="10" value="300">
+                        </div>
+                        <div class="rangeslider-wrap volume-slider hide">
+                            <input id="volume-slider" type="range" min="1" max="10" step="1" value="1">
+                        </div>
+                    </div>
+                    <div class="col-xs-3" style="padding-right: 2px">
+                        <button data-side="ask" class="btn btn-danger btn-send-order btn-lg">SELL</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
     </div>
 </div>
 
@@ -41,9 +63,56 @@
     var depth_order_book = "{{depth}}";
 </script>
 
-<script src="{{ url_for('generated.static', filename= 'js/ExchangeClient.js') }}"></script>
 <script>
     var theExchangeClient = new ExchangeClient(exchange_id, product_id, depth_order_book);
+
+    var priceSlider = $('input#price-slider[type="range"]');
+    priceSlider.rangeslider({
+        polyfill: false,
+        onInit: function () {
+            $rangeEl = this.$range;
+            var $handle = $rangeEl.find('.rangeslider__handle');
+            var handleValue = '<div class="rangeslider__handle__value">' + this.value +
+                " x" + $('#volume').val() + '</div>';
+            $handle.append(handleValue);
+            $('#price').val(this.value);
+        },
+        onSlide: function (position, value) {
+            var $handle = this.$range.find('.rangeslider__handle__value');
+            $handle.text(this.value + " x" + $('#volume').val());
+            $('#price').val(this.value);
+        }
+    });
+    var volumeSlider = $('input#volume-slider[type="range"]');
+    volumeSlider.rangeslider({
+        polyfill: false,
+        onInit: function () {
+            $rangeEl = this.$range;
+            var $handle = $rangeEl.find('.rangeslider__handle');
+            var handleValue = '<div class="rangeslider__handle__value">' + this.value
+                + " (" + $("#price").val() + ")" + '</div>';
+            $handle.append(handleValue);
+        },
+        onSlide: function (position, value) {
+            var $handle = this.$range.find('.rangeslider__handle__value');
+            $handle.text(this.value + " (" + $("#price").val() + ")");
+            $('#volume').val(this.value);
+        }
+    });
+
+    function switchSliders() {
+        priceSlider.rangeslider('update', true);
+        volumeSlider.rangeslider('update', true);
+
+        $('.rangeslider-wrap:not(.hide)').addClass("tmp_class");
+        $('.rangeslider-wrap.hide').removeClass("hide");
+        $('.rangeslider-wrap.tmp_class').addClass("hide").removeClass("tmp_class");
+    }
+
+    $("#sliders").doubletap(switchSliders);
+    $("#sliders").dblclick(switchSliders);
+
+
 </script>
 
 {% endblock %}

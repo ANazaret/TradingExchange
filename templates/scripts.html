@@ -1,10 +1,11 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-<script src="{{ url_for('static', filename= 'js/websockets.js') }}"></script>
-<script src="{{ url_for('static', filename= 'js/OrderBook.js') }}"></script>
+<script src="{{ url_for('generated.static', filename= 'js/OrderBook.js') }}"></script>
+<script src="{{ url_for('generated.static', filename= 'js/ExchangeClient.js') }}"></script>
 
-<script src="{{ url_for('static', filename= 'js/split.min.js') }}"></script>
 <script src="{{ url_for('static', filename= 'js/jquery/jquery-3.3.1.min.js') }}"></script>
 <script src="{{ url_for('static', filename= 'js/jquery/jquery-ui.min.js') }}"></script>
+<script src="{{ url_for('static', filename= 'js/jquery/jquery-doubletap.js') }}"></script>
+
 <script src="{{ url_for('static', filename= 'js/bootstrap/popper.js') }}"></script>
 <script src="{{ url_for('static', filename= 'js/bootstrap/bootstrap.min.js') }}"></script>
 
@@ -12,3 +13,4 @@
 <script src="{{ url_for('static', filename= 'js/dataTables/dataTables.bootstrap.min.js') }}"></script>
 
 <script src="{{ url_for('static', filename= 'js/bootstrap-dialog.js') }}"></script>
+<script src="{{ url_for('static', filename= 'js/rangeslider/rangeslider.min.js') }}"></script>

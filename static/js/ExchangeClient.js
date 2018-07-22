@@ -18,7 +18,7 @@ class ExchangeClient {
     }
 
     connect() {
-        $('h1').append(' - Connected');
+        $('#exchange-name').append(' <span class="glyphicon glyphicon-ok"></span>');
         this.socket.emit('join_exchange',
             {'exchange_id': this.exchange_id, 'product_id': this.exchange_id + '__default'},
             (book) => this.order_book.update(book));
