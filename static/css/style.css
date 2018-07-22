@@ -35,6 +35,18 @@ h1, h2, h3 {
     height: 60px;
 }
 
+.price-display, .volume-display {
+    font-size: 200%;
+}
+
+#order_history .list-group-item {
+    padding: 3px 10px;
+}
+
+.partial-orders [data-status="FILLED"], .partial-orders [data-status="CANCELED"] {
+    display: none;
+}
+
 a > span.glyphicon {
     color: black;
 

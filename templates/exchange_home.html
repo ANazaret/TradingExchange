@@ -3,9 +3,15 @@
 {% block body %}
 
 <div class="container">
-    <div class="row ">
-        <div class="col-sm-4" id="order_book">
+    <div class="row" style="padding-top: 5px">
+        <div class="col-sm-4 col-xs-6" id="order_book">
+            <h3 class="center">Order Book</h3>
             {% include 'order_book.html' %}
+        </div>
+        <div class="col-sm-4 col-xs-6 partial-orders" id="order_history">
+            <h3 class="center">Orders -
+                <small class="pointer" id="toogle_order_history" data-mode="p">Partial</small>
+            </h3>
         </div>
         <div id="exchange" class="col-md-6 col-md-offset-3">
         </div>
@@ -35,6 +41,8 @@
                         <button data-side="bid" class="btn btn-success btn-send-order btn-lg">BUY</button>
                     </div>
                     <div class="col-xs-6" id="sliders">
+                        <span class="price-display"></span>
+                         x<span class="volume-display"></span>
                         <div class="rangeslider-wrap price-slider">
                             <input id="price-slider" type="range" min="10" max="1000" step="10" value="300">
                         </div>
@@ -46,7 +54,9 @@
                         <button data-side="ask" class="btn btn-danger btn-send-order btn-lg">SELL</button>
                     </div>
                 </div>
+                <div class="center" style="position: absolute">
 
+                </div>
             </div>
         </div>
 
@@ -70,32 +80,49 @@
     priceSlider.rangeslider({
         polyfill: false,
         onInit: function () {
-            $rangeEl = this.$range;
-            var $handle = $rangeEl.find('.rangeslider__handle');
-            var handleValue = '<div class="rangeslider__handle__value">' + this.value +
-                " x" + $('#volume').val() + '</div>';
-            $handle.append(handleValue);
+            $('.price-display').text(this.value);
             $('#price').val(this.value);
+            this.$range.find('.rangeslider__handle').html(
+                '<div style="position:absolute;bottom: 20px; width:50px; height: 50px; right: -17px; "></div>'
+            );
         },
         onSlide: function (position, value) {
-            var $handle = this.$range.find('.rangeslider__handle__value');
-            $handle.text(this.value + " x" + $('#volume').val());
+            $('.price-display').text(this.value);
             $('#price').val(this.value);
+        },
+        onSlideEnd: function () {
+            var attributes;
+            if (this.value > this.max - 2) {
+                attributes = {
+                    min: Math.max(this.value - 5, 1),
+                    max: this.value + 100,
+                    step: 2
+                };
+            } else if (this.value < this.min + 2) {
+                attributes = {
+                    min: Math.max(this.value - 100, 1),
+                    max: this.value + 2,
+                    step: 2
+                };
+            } else {
+                attributes = {
+                    min: Math.max(this.value - 25, 1),
+                    max: this.value + 25,
+                    step: 1
+                };
+            }
+            this.$element.attr(attributes).rangeslider('update', true);
         }
     });
     var volumeSlider = $('input#volume-slider[type="range"]');
     volumeSlider.rangeslider({
         polyfill: false,
         onInit: function () {
-            $rangeEl = this.$range;
-            var $handle = $rangeEl.find('.rangeslider__handle');
-            var handleValue = '<div class="rangeslider__handle__value">' + this.value
-                + " (" + $("#price").val() + ")" + '</div>';
-            $handle.append(handleValue);
+            $('.volume-display').text(this.value);
+            $('#volume').val(this.value);
         },
         onSlide: function (position, value) {
-            var $handle = this.$range.find('.rangeslider__handle__value');
-            $handle.text(this.value + " (" + $("#price").val() + ")");
+            $('.volume-display').text(this.value);
             $('#volume').val(this.value);
         }
     });
@@ -109,9 +136,42 @@
         $('.rangeslider-wrap.tmp_class').addClass("hide").removeClass("tmp_class");
     }
 
-    $("#sliders").doubletap(switchSliders);
-    $("#sliders").dblclick(switchSliders);
+    $("#sliders").dblclick(switchSliders).doubletap(switchSliders);
 
+    $('.price').click(
+        function (event) {
+            if (event.currentTarget.textContent !== " ") {
+                var price = parseFloat(event.currentTarget.textContent);
+                var attributes = {
+                    min: Math.max(price - 25, 1),
+                    max: price + 25,
+                    step: 1,
+                    value: price
+                };
+                $("#price").val(price);
+                priceSlider.attr(attributes).rangeslider('update', true);
+                priceSlider.val(price);
+                priceSlider.attr(attributes).rangeslider('update', true);
+                priceSlider.val(price);
+            }
+        }
+    );
+
+    $("#toogle_order_history").click(function () {
+        if ($("#toogle_order_history").attr('data-mode') == "p"){
+            $("#toogle_order_history").attr('data-mode', "all").text('All');
+            $("#order_history").removeClass("partial-orders");
+        } else {
+            $("#toogle_order_history").attr('data-mode', "p").text('Partial');
+            $("#order_history").addClass("partial-orders");
+        }
+    });
+
+    $("#order_history").on("click", "a", function(event){
+        var order_html = $(this);
+        theExchangeClient.cancelOrder(parseInt(order_html.attr("data-order-id")),
+        order_html.attr("data-product-id"));
+    })
 
 </script>
 

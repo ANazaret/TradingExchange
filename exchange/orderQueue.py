@@ -1,4 +1,4 @@
-from exchange.order import Side, Order
+from exchange.order import Side, Order, Status
 
 
 class OrderQueue:
@@ -25,7 +25,11 @@ class OrderQueue:
     def empty(self) -> bool:
         return len(self._data) == 0
 
+    def clean(self):
+        self._data = list(filter(lambda o: o.status in (Status.NEW | Status.PARTIAL), self._data ))
+
     def json(self):
+        self.clean()
         # Functional style <3
         def aux(orders):
             if len(orders) == 0:

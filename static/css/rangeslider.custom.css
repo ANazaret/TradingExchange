@@ -3,7 +3,7 @@ body {
 }
 
 .rangeslider-wrap {
-    padding-top: 40px;
+    padding-top: 5px;
 }
 
 .rangeslider {
@@ -72,11 +72,11 @@ body {
     border-radius: 5px;
 }
 
-.rangeslider.rangeslider--active .rangeslider__handle, .rangeslider.rangeslider--active .rangeslider__handle * {
+.rangeslider.rangeslider--active .rangeslider__handle, .rangeslider.rangeslider--active .rangeslider__handle  {
     background-color: #33adff;
 }
 
-.rangeslider.rangeslider--active .rangeslider__handle *:before {
+.rangeslider.rangeslider--active .rangeslider__handle :before {
     border-top-color: #33adff;
 }
 

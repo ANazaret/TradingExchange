@@ -43,6 +43,7 @@ def join_exchange(message):
 
     return {
         'order_book': god.get_exchange(exchange_id).get_order_book(product_id).json(),
+        'user_orders': [o.json() for o in user.orders]
     }
 
 
@@ -63,13 +64,18 @@ def place_order(data):
     product_id = data['product_id']
     exchange_id = session['exchange_id']
     user_id = session['user_id']
-    order = god.get_exchange(exchange_id).place_order(
-        god.get_user(user_id), product_id, side, volume, price)
+    order = god.get_user(user_id).place_order(
+        god.get_exchange(exchange_id), product_id, side, volume, price)
 
-    return {
-        'order': order.json(),
-    }
+    return order.json()
 
+@socketio.on('cancel_order')
+@username_required
+@field_session_required(field='exchange_id')
+def cancel_order(data):
+    if not check_dict_fields(data, ['product_id', 'order_id']):
+        return 'Invalid request'
+    god.get_user(session['user_id']).cancel_order(data['order_id'], data['product_id'])
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=8000, debug=True)

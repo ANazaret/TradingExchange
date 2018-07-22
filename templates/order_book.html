@@ -1,27 +1,25 @@
-<div class="col-md-8">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th> Vol.</th>
-            <th> Price</th>
-            <th> Vol.</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for i in range(depth) %}
-        <tr data-side="ask" data-depth={{depth-i-1}}>
-            <td class="volume-bid pointer"></td>
-            <td class="price pointer"> </td>
-            <td class="volume-ask pointer"></td>
-        </tr>
-        {% endfor %}
-        {% for i in range(depth) %}
-        <tr data-side="bid" data-depth={{i}}>
-            <td class="volume-bid pointer"></td>
-            <td class="price pointer"> </td>
-            <td class="volume-ask pointer"></td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+<table class="table table-bordered" id="order_book_table" style="margin-bottom: 0">
+    <thead>
+    <tr>
+        <th> Vol.</th>
+        <th> Price</th>
+        <th> Vol.</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in range(depth) %}
+    <tr data-side="ask" data-depth={{depth-i-1}}>
+        <td class="volume-bid pointer"></td>
+        <td class="price pointer"> </td>
+        <td class="volume-ask pointer"></td>
+    </tr>
+    {% endfor %}
+    {% for i in range(depth) %}
+    <tr data-side="bid" data-depth={{i}}>
+        <td class="volume-bid pointer"></td>
+        <td class="price pointer"> </td>
+        <td class="volume-ask pointer"></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

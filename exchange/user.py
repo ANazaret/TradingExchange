@@ -37,9 +37,13 @@ class User:
     def place_sell_order(self, price: float, volume: int, product: Product) -> Order:
         return self.place_order(price, volume, product, Side.ASK)
 
-    def place_order(self, price: float, volume: int, product: Product, side: Side) -> Order:
-        order = Order(self, side, volume, price, product)
-        product.exchange.place_order(order)
+    def place_order(self, exchange, product_id: str, side: Side, volume: int, price: float) -> Order:
+        order = exchange.place_order(self, product_id, side, volume, price)
         self.orders.append(order)
+        return order
 
-        return order.status
+    def cancel_order(self, order_id, product_id):
+        for order in self.orders:
+            if order.product.id == product_id and order.id == order_id:
+                if order.cancel():
+                    order.product.exchange.broadcast_order_book(product_id)

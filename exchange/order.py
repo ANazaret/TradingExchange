@@ -17,10 +17,10 @@ class Side(IntEnum):
 
 
 class Status(IntFlag):
-    CANCELED = 0
-    NEW = 1
-    PARTIAL = 2
-    FILLED = 4
+    CANCELED = 1
+    NEW = 2
+    PARTIAL = 4
+    FILLED = 8
 
 
 class Order:
@@ -44,7 +44,10 @@ class Order:
             self._update_status(Status.PARTIAL)
 
     def cancel(self):
-        self._update_status(Status.CANCELED)
+        if self.status in (Status.NEW | Status.PARTIAL):
+            self._update_status(Status.CANCELED)
+            return True
+        return False
 
     def _update_status(self, new_status: Status):
         self.status = new_status
@@ -64,10 +67,13 @@ class Order:
 
     def json(self):
         return {
-            'order_id': self.id,
+            'id': self.id,
             'status': self.status._name_,
             'volume_remaining': self.volume_remaining,
-            # other stuff to add
+            'volume_initial': self.volume,
+            'price': self.price,
+            'side': self.side._name_.lower(),
+            'product_id': self.product.id
         }
 
     def set_id(self, n_orders):
